@@ -1,0 +1,7 @@
+{
+  "name": "my.NIKITA",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
