@@ -1,20 +1,66 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Chounkov
+      {{ newName || 'Мой список' }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Как дела?</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ newName ? 'Вы вводите: ' + newName : 'Жду вашего ответа...' }}
+    </ion-card-content>
+  </ion-card>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <ion-list lines="full">
+    <ion-item>
+      <ion-input label="Название напитка:" label-placement="floating" [(ngModel)]="newName" placeholder="Введите название"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Производитель:" label-placement="floating" [(ngModel)]="newProducer" placeholder="Введите производителя"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="addItem()" [disabled]="!newName || !newProducer">
+      Добавить в список
+    </ion-button>
   </div>
+
+  <ion-grid fixed>
+    <!-- Заголовок таблицы -->
+    <ion-row style="border-bottom: 2px solid #ccc; font-weight: bold;">
+      <ion-col size="3">ID (UUID)</ion-col>
+      <ion-col size="4">Название</ion-col>
+      <ion-col size="3">Прод-ль</ion-col>
+      <ion-col size="2">Действие</ion-col>
+    </ion-row>
+    
+    <!-- Список элементов -->
+    <ion-row *ngFor="let item of beer; let i = index">
+      <ion-col size="3" style="font-size: 10px; word-break: break-all;">
+        {{ item.id | slice:0:8 }}...
+      </ion-col>
+      <ion-col size="4">{{ item.beer_name }}</ion-col>
+      <ion-col size="3">{{ item.producer }}</ion-col>
+      
+      <!-- Текстовая кнопка удаления -->
+      <ion-col size="2" class="ion-text-center ion-align-items-center">
+        <ion-button fill="outline" color="danger" size="small" (click)="deleteItem(i)">
+          Удалить
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- Сообщение если список пуст -->
+    <ion-row *ngIf="beer.length === 0">
+      <ion-col class="ion-text-center ion-padding-top">
+        <ion-text color="medium">Список пока пуст</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
